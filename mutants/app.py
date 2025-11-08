@@ -35,6 +35,38 @@ _text_generator: TextGenerator = GeminiTextGenerator()
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
+from inspect import signature as _mutmut_signature
+from typing import Annotated
+from typing import Callable
+from typing import ClassVar
+
+
+MutantDict = Annotated[dict[str, Callable], "Mutant"]
+
+
+def _mutmut_trampoline(orig, mutants, call_args, call_kwargs, self_arg = None):
+    """Forward call to original or mutated function, depending on the environment"""
+    import os
+    mutant_under_test = os.environ['MUTANT_UNDER_TEST']
+    if mutant_under_test == 'fail':
+        from mutmut.__main__ import MutmutProgrammaticFailException
+        raise MutmutProgrammaticFailException('Failed programmatically')      
+    elif mutant_under_test == 'stats':
+        from mutmut.__main__ import record_trampoline_hit
+        record_trampoline_hit(orig.__module__ + '.' + orig.__name__)
+        result = orig(*call_args, **call_kwargs)
+        return result
+    prefix = orig.__module__ + '.' + orig.__name__ + '__mutmut_'
+    if not mutant_under_test.startswith(prefix):
+        result = orig(*call_args, **call_kwargs)
+        return result
+    mutant_name = mutant_under_test.rpartition('.')[-1]
+    if self_arg:
+        # call to a class method where self is not bound
+        result = mutants[mutant_name](self_arg, *call_args, **call_kwargs)
+    else:
+        result = mutants[mutant_name](*call_args, **call_kwargs)
+    return result
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -43,12 +75,70 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    def to_public_dict(self):
+    def xǁUserǁto_public_dict__mutmut_orig(self):
         return {
             'id': self.id,
             'email': self.email,
             'created_at': self.created_at.isoformat(),
         }
+
+    def xǁUserǁto_public_dict__mutmut_1(self):
+        return {
+            'XXidXX': self.id,
+            'email': self.email,
+            'created_at': self.created_at.isoformat(),
+        }
+
+    def xǁUserǁto_public_dict__mutmut_2(self):
+        return {
+            'ID': self.id,
+            'email': self.email,
+            'created_at': self.created_at.isoformat(),
+        }
+
+    def xǁUserǁto_public_dict__mutmut_3(self):
+        return {
+            'id': self.id,
+            'XXemailXX': self.email,
+            'created_at': self.created_at.isoformat(),
+        }
+
+    def xǁUserǁto_public_dict__mutmut_4(self):
+        return {
+            'id': self.id,
+            'EMAIL': self.email,
+            'created_at': self.created_at.isoformat(),
+        }
+
+    def xǁUserǁto_public_dict__mutmut_5(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'XXcreated_atXX': self.created_at.isoformat(),
+        }
+
+    def xǁUserǁto_public_dict__mutmut_6(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'CREATED_AT': self.created_at.isoformat(),
+        }
+    
+    xǁUserǁto_public_dict__mutmut_mutants : ClassVar[MutantDict] = {
+    'xǁUserǁto_public_dict__mutmut_1': xǁUserǁto_public_dict__mutmut_1, 
+        'xǁUserǁto_public_dict__mutmut_2': xǁUserǁto_public_dict__mutmut_2, 
+        'xǁUserǁto_public_dict__mutmut_3': xǁUserǁto_public_dict__mutmut_3, 
+        'xǁUserǁto_public_dict__mutmut_4': xǁUserǁto_public_dict__mutmut_4, 
+        'xǁUserǁto_public_dict__mutmut_5': xǁUserǁto_public_dict__mutmut_5, 
+        'xǁUserǁto_public_dict__mutmut_6': xǁUserǁto_public_dict__mutmut_6
+    }
+    
+    def to_public_dict(self, *args, **kwargs):
+        result = _mutmut_trampoline(object.__getattribute__(self, "xǁUserǁto_public_dict__mutmut_orig"), object.__getattribute__(self, "xǁUserǁto_public_dict__mutmut_mutants"), args, kwargs, self)
+        return result 
+    
+    to_public_dict.__signature__ = _mutmut_signature(xǁUserǁto_public_dict__mutmut_orig)
+    xǁUserǁto_public_dict__mutmut_orig.__name__ = 'xǁUserǁto_public_dict'
 
 
 class Document(db.Model):
@@ -131,9 +221,43 @@ def me():
     return jsonify({'user': user.to_public_dict()})
 
 
-def _allowed_file(filename: str) -> bool:
+def x__allowed_file__mutmut_orig(filename: str) -> bool:
     _, ext = os.path.splitext(filename)
     return ext.lower() in ALLOWED_EXTENSIONS
+
+
+def x__allowed_file__mutmut_1(filename: str) -> bool:
+    _, ext = None
+    return ext.lower() in ALLOWED_EXTENSIONS
+
+
+def x__allowed_file__mutmut_2(filename: str) -> bool:
+    _, ext = os.path.splitext(None)
+    return ext.lower() in ALLOWED_EXTENSIONS
+
+
+def x__allowed_file__mutmut_3(filename: str) -> bool:
+    _, ext = os.path.splitext(filename)
+    return ext.upper() in ALLOWED_EXTENSIONS
+
+
+def x__allowed_file__mutmut_4(filename: str) -> bool:
+    _, ext = os.path.splitext(filename)
+    return ext.lower() not in ALLOWED_EXTENSIONS
+
+x__allowed_file__mutmut_mutants : ClassVar[MutantDict] = {
+'x__allowed_file__mutmut_1': x__allowed_file__mutmut_1, 
+    'x__allowed_file__mutmut_2': x__allowed_file__mutmut_2, 
+    'x__allowed_file__mutmut_3': x__allowed_file__mutmut_3, 
+    'x__allowed_file__mutmut_4': x__allowed_file__mutmut_4
+}
+
+def _allowed_file(*args, **kwargs):
+    result = _mutmut_trampoline(x__allowed_file__mutmut_orig, x__allowed_file__mutmut_mutants, args, kwargs)
+    return result 
+
+_allowed_file.__signature__ = _mutmut_signature(x__allowed_file__mutmut_orig)
+x__allowed_file__mutmut_orig.__name__ = 'x__allowed_file'
 
 
 

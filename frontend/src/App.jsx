@@ -9,6 +9,7 @@ import UploadPage from './pages/Upload'
 import { getToken } from './services/api'
 import AIPage from './pages/AI'
 import QuizPage from './pages/Quiz'
+import DocumentsPage from './pages/Documents'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={<Home isAuthenticated={isAuthenticated} />} />
           <Route path="/ai" element={<AIPage />} />
           <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/documents" element={<DocumentsPage isAuthenticated={isAuthenticated} />} />
           <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/upload" element={<UploadPage isAuthenticated={isAuthenticated} />} />

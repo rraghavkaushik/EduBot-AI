@@ -41,12 +41,20 @@ export default function Header({ isAuthenticated, setIsAuthenticated }) {
             📝 Quiz
           </Link>
           {isAuthenticated && (
-            <Link 
-              to="/upload" 
-              className={isActive('/upload') ? 'active' : ''}
-            >
-              📤 Upload
-            </Link>
+            <>
+              <Link 
+                to="/upload" 
+                className={isActive('/upload') ? 'active' : ''}
+              >
+                📤 Upload
+              </Link>
+              <Link 
+                to="/documents" 
+                className={isActive('/documents') ? 'active' : ''}
+              >
+                📚 Documents
+              </Link>
+            </>
           )}
           {!isAuthenticated ? (
             <>

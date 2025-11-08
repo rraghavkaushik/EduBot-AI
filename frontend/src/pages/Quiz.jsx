@@ -135,6 +135,36 @@ export default function QuizPage() {
             <button className="btn" onClick={handleNewQuiz}>
               🧠 New Flashcards
             </button>
+            <button 
+              className="btn" 
+              onClick={() => {
+                const text = cards.map((c, i) => `Q${i + 1}: ${c.question}\nA${i + 1}: ${c.answer}\n`).join('\n')
+                const blob = new Blob([text], { type: 'text/plain' })
+                const url = URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = 'flashcards.txt'
+                a.click()
+                URL.revokeObjectURL(url)
+              }}
+            >
+              💾 Export as Text
+            </button>
+            <button 
+              className="btn" 
+              onClick={() => {
+                const json = JSON.stringify({ flashcards: cards }, null, 2)
+                const blob = new Blob([json], { type: 'application/json' })
+                const url = URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = 'flashcards.json'
+                a.click()
+                URL.revokeObjectURL(url)
+              }}
+            >
+              📦 Export as JSON
+            </button>
           </div>
 
           {/* Review Section */}

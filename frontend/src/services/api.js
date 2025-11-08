@@ -64,6 +64,13 @@ export const uploadFile = (formData) => {
   })
 }
 
+// Document management
+export const getDocuments = () => api.get('/api/documents')
+
+export const getDocument = (docId) => api.get(`/api/documents/${docId}`)
+
+export const deleteDocument = (docId) => api.delete(`/api/documents/${docId}`)
+
 // -----------------------------
 // Real AI API functions (with fallback to mocks)
 // -----------------------------

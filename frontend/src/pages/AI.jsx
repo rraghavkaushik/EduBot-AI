@@ -84,12 +84,42 @@ export default function AIPage() {
           <div className="card-header">
             <h2 className="card-title">🎴 Flashcards</h2>
             <p className="card-subtitle">Tap a card to flip</p>
-            <div className="mt-3">
+            <div className="mt-3" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <button 
                 className="btn btn-success" 
                 onClick={() => navigate('/quiz', { state: { cards } })}
               >
                 📝 Start Quiz Mode
+              </button>
+              <button 
+                className="btn" 
+                onClick={() => {
+                  const text = cards.map((c, i) => `Q${i + 1}: ${c.question}\nA${i + 1}: ${c.answer}\n`).join('\n')
+                  const blob = new Blob([text], { type: 'text/plain' })
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                  a.href = url
+                  a.download = 'flashcards.txt'
+                  a.click()
+                  URL.revokeObjectURL(url)
+                }}
+              >
+                💾 Export as Text
+              </button>
+              <button 
+                className="btn" 
+                onClick={() => {
+                  const json = JSON.stringify({ flashcards: cards }, null, 2)
+                  const blob = new Blob([json], { type: 'application/json' })
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                  a.href = url
+                  a.download = 'flashcards.json'
+                  a.click()
+                  URL.revokeObjectURL(url)
+                }}
+              >
+                📦 Export as JSON
               </button>
             </div>
           </div>
