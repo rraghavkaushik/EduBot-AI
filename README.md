@@ -1,7 +1,5 @@
 # EduBot Flask API
 
-A simple Flask backend API project.
-
 ## Setup
 
 1. **Create and activate virtual environment:**
@@ -102,15 +100,4 @@ TOKEN=$(curl -s -X POST http://localhost:5001/api/auth/login \
 
 # Call protected endpoint
 curl http://localhost:5001/api/me -H "Authorization: Bearer $TOKEN"
-```
-
-## Project Structure
-
-```
-EduBot/
-├── app.py              # Main Flask application
-├── requirements.txt    # Python dependencies
-├── .gitignore         # Git ignore file
-├── README.md          # This file
-└── venv/              # Virtual environment (not in git)
 ```
