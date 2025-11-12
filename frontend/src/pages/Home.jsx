@@ -134,7 +134,7 @@ export default function Home({ isAuthenticated }) {
 
       {/* Status Section */}
       <section className="container">
-        <div className="card">
+      <div className="card">
           <div className="card-header">
             <h3>System Status</h3>
           </div>
@@ -148,7 +148,7 @@ export default function Home({ isAuthenticated }) {
           </div>
         </div>
       </section>
-    </div>
+      </div>
   )
 }
 
