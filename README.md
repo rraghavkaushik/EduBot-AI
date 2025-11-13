@@ -1,4 +1,4 @@
-# EduBot Flask API
+# EduBot AI
 
 ## Setup
 
